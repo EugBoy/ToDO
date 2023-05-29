@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do list</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="container">
+        <h1>TODO App</h1>
+        <form class="taskForm">
+            <input type="text" name="name" placeholder="Write new task" autofocus>
+            <button>Add</button>
+            <select name="priority">
+                <option value="High" selected="selected">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+        </form>
+        <div class="inputFilter">
+            <div class="checkbox">
+                <input id="completed" type="checkbox" class="checkComplited" value="completed" >
+                <label for="completed">Completed</label>
+            </div>
+            <div class="checkbox">
+                <input id ="high"type="checkbox" class="checkPriority" value="high" checked>
+                <label for="high">High</label>
+            </div>
+            <div class="checkbox">
+                <input id="medium" type="checkbox" class="checkPriority" value="medium" checked>
+                <label for="medium">Medium</label>
+            </div>
+            <div class="checkbox">
+                <input id="low" type="checkbox" class="checkPriority" value="low" checked>
+                <label for="low">Low</label>
+            </div>
+            <div class="checkbox">
+                <img id="date" src="caret.png" alt="">
+                <div class="date">Date</div>
+            </div>
+        </div>
+        <div class="tasks">
+            <!-- <div class="task">
+                <div class="taskInfo">
+                    <div class="taskName">Задача</div>
+                    <div class="taskPriority">Высокий</div>
+                    <div class="taskDate">22.12.2345</div>
+                </div>
+                <div class="taskAction">
+                    <img src="trash.png" alt="" class="actionDelete">
+                    <img src="check.png" alt="" class="actionCompleted">
+                    <img src="cross.png" alt="" class="actionCanseled">
+                </div>
+            </div> -->
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

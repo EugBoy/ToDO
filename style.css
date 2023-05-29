@@ -1,0 +1,123 @@
+body {
+    background-color: #1d0853;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    margin-top: 50px;
+    padding: 15px;
+    width: 700px;
+    min-height: 400px;
+    background-color: #fff;
+}
+.container h1{
+    text-align: center;
+}
+
+.taskForm {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+}
+.container .taskForm form {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.container .taskForm input {
+    width: 60%;
+    height: 30px;
+    box-shadow: none;
+}
+.container .taskForm button {
+    width: 20%;
+    height: 35px;
+    box-shadow: none;
+}
+.container .taskForm select {
+    width: 20%;
+    height: 35px;
+    box-shadow: none;
+}
+
+
+.inputFilter {
+    display: flex;
+    height: 20px;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.checkbox{
+    display: flex;
+    flex-direction: row;
+
+
+}
+.checkbox label{
+    padding-left: 10px;    
+}
+
+.checkbox div{
+    width: 100%;    
+    padding-left: 10px;
+}
+
+
+
+.checkbox img{
+    margin-right: 10px;
+    height: 20px;
+    width: 20px;
+}
+
+.checkbox div {
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+.task {
+    height: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border: black 2px solid;
+}
+
+.taskInfo {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 90%;
+}
+.taskAction {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 10%;
+}
+.taskAction img{
+    width: 20px;
+}
+.taskId {
+    display: none;
+}
+.deletedTask {
+    display: none;
+}
