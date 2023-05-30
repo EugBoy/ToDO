@@ -8,7 +8,7 @@ body {
     margin-top: 50px;
     padding: 15px;
     width: 700px;
-    min-height: 400px;
+    min-height: 200px;
     background-color: #fff;
 }
 .container h1{
@@ -20,6 +20,10 @@ body {
     height: 70px;
     display: flex;
     justify-content: space-between;
+}
+.taskInfo{
+    padding-top: 10px;
+    padding-left: 10px;
 }
 .container .taskForm form {
     width: 100%;
@@ -98,22 +102,26 @@ body {
     display: flex;
     flex-direction: row;
     border: black 2px solid;
+    margin-bottom: 10px;
 }
 
 .taskInfo {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 90%;
+    width: 95%;
 }
 .taskAction {
     display: flex;
     flex-direction: column;
     height: 100%;
-    width: 10%;
+    width: 5%;
+    padding-top: 10px;
 }
 .taskAction img{
     width: 20px;
+    margin-bottom: 10px;
+
 }
 .taskId {
     display: none;

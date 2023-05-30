@@ -19,33 +19,58 @@ function filterTasks(){
     outputTasks = JSON.parse(outputTasks);
     if (filters.time){
         outputTasks.sort(function(a,b){
-            console.log(a.taskDate)
+            // console.log(a.taskDate)
             return 1
         })
     } else {
         outputTasks.sort(function(a,b){
-            console.log(a.taskDate)
+            // console.log(a.taskDate)
             return -1
         })
     }
     outputTasks = outputTasks.filter(function(el){
-        console.log(el.priority);
         let p = el.priority.toLowerCase();
-
-        console.log(p);
-
-        return filters[p]
+        let s = el.status.toLowerCase();
+        if (filters.complited){
+            
+            // console.log(p);
+            // console.log(s);
+            if (filters.high || filters.medium || filters.low){
+                console.log(filters.high || filters.medium || filters.low);
+                console.log(filters[p] && (s != "performing"))
+                return filters[p] && (s != "performing")   
+            } else {
+                return true
+            }
+        } else {
+            // console.log(p);
+            // console.log(s);
+            if (filters.high || filters.medium || filters.low){
+                
+                return ((s != "completed") || (s != "canseled")) && filters[p] 
+            } else{
+                return true
+            }
+        }   
     })
-    outputTasks = outputTasks.filter(function(el){
-        console.log(el.status);
-        let c = el.status
-        if (c == 'performing' && filters.complited == false){
-            return true
-        } else if (c != 'performing' && filters.complited){
-            return true
-        }
-        return false
-    })
+    // outputTasks = outputTasks.filter(function(el){
+    //     console.log(el.priority);
+    //     let p = el.priority.toLowerCase();
+
+    //     console.log(p);
+
+    //     return filters[p]
+    // })
+    // outputTasks = outputTasks.filter(function(el){
+    //     console.log(el.status);
+    //     let c = el.status
+    //     if (c == 'performing' && filters.complited == false){
+    //         return true
+    //     } else if (c != 'performing' && filters.complited){
+    //         return true
+    //     }
+    //     return false
+    // })
     outputTasks.forEach(createTaskElement)
 }
 
@@ -53,30 +78,38 @@ taskForm.onsubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(taskForm);
     const name = formData.get('name');
-    const priority = formData.get('priority');
-    const changing = false;
+    if (name == ''){
+        alert('Give name to task')
+    } else {    
+        const priority = formData.get('priority');
+        const changing = false;
+        const taskDate = new Date;
+        const day = taskDate.getDate();
+        const month = String(taskDate.getMonth());
+        const year = taskDate.getFullYear();
+        const hours = taskDate.getHours();
+        let minutes = taskDate.getMinutes();
+        if (Number(minutes) < 10){
+            minutes = "0" + minutes;
+        }
+        const date = day + '.' + month.padStart(2,'0') + '.' +year + ' ' + hours + ':' + minutes;
 
-    const taskDate = new Date;
-    const day = taskDate.getDate();
-    const month = String(taskDate.getMonth());
-    const year = taskDate.getFullYear();
-    const hours = taskDate.getHours();
-    const minutes = taskDate.getMinutes();
-    const date = day + '/' + month.padStart(2,'0') + '/' +year + ' ' + hours + ':' + minutes;
 
 
-
-    const status = "performing";
-    const actionDate = "";
-    tasksAmount+=1;
-    id = tasksAmount;
+        const status = "performing";
+        const actionDate = "";
+        tasksAmount+=1;
+        id = tasksAmount;
     
-    tasks.push({name, priority, date, status, id, taskDate, actionDate, changing});
-    e.target.reset();
-    console.log({name, priority, date, status, id, taskDate, actionDate, changing});
-    taskContainer.innerHTML = '';
-    filterTasks();
-    saveData();
+        tasks.push({name, priority, date, status, id, taskDate, actionDate, changing});
+        e.target.reset();
+        //console.log({name, priority, date, status, id, taskDate, actionDate, changing});
+        taskContainer.innerHTML = '';
+        filterTasks();
+        saveData();
+
+    }
+    
 }
 
 taskContainer.addEventListener('click', function(e){
@@ -96,8 +129,11 @@ taskContainer.addEventListener('click', function(e){
         const month = String(taskDate.getMonth());
         const year = taskDate.getFullYear();
         const hours = taskDate.getHours();
-        const minutes = taskDate.getMinutes();
-        const date = day + '/' + month.padStart(2,'0') + '/' +year + ' ' + hours + ':' + minutes;
+        let minutes = taskDate.getMinutes();
+        if (Number(minutes) < 10){
+            minutes = "0" + minutes;
+        }
+        const date = day + '.' + month.padStart(2,'0') + '.' +year + ' ' + hours + ':' + minutes;
         tasks[taskId-1].actionDate = date;
         // tasks[taskId-1].taskDate = taskDate;
 
@@ -114,8 +150,11 @@ taskContainer.addEventListener('click', function(e){
         const month = String(taskDate.getMonth());
         const year = taskDate.getFullYear();
         const hours = taskDate.getHours();
-        const minutes = taskDate.getMinutes();
-        const date = day + '/' + month.padStart(2,'0') + '/' +year + ' ' + hours + ':' + minutes;
+        let minutes = taskDate.getMinutes();
+        if (Number(minutes) < 10){
+            minutes = "0" + minutes;
+        }
+        const date = day + '.' + month.padStart(2,'0') + '.' +year + ' ' + hours + ':' + minutes;
 
         tasks[taskId-1].actionDate = date;
         taskContainer.innerHTML = '';
@@ -137,18 +176,18 @@ filterContainer.addEventListener('click', function(e) {
     let checkbox = document.querySelectorAll('.checkbox input');
     let caret = document.querySelector('.checkbox img');
     let caretDate = document.querySelector('.checkbox div');
-    console.log(checkbox);
+    //console.log(checkbox);
     if (e.target = check) {
         if (check.checked){
             filters.complited = true;
-            console.log('добавлено');
+            // console.log('добавлено');
             taskContainer.innerHTML = '';
             filterTasks();
 
             
         } else {
             filters.complited = false;
-            console.log('удалено');
+            // console.log('удалено');
             taskContainer.innerHTML = '';
             filterTasks();
             
@@ -158,13 +197,13 @@ filterContainer.addEventListener('click', function(e) {
     if (e.target = checkbox[1]) {
         if (checkbox[1].checked){
             filters.high = true;
-            console.log('добавлено');
+            // console.log('добавлено');
             taskContainer.innerHTML = '';
             filterTasks();
             
         } else {
             filters.high = false;
-            console.log('удалено');
+            //console.log('удалено');
             taskContainer.innerHTML = '';
             filterTasks();
             
@@ -174,13 +213,13 @@ filterContainer.addEventListener('click', function(e) {
     if (e.target = checkbox[2]) {
         if (checkbox[2].checked){
             filters.medium = true;
-            console.log('добавлено');
+            //console.log('добавлено');
             taskContainer.innerHTML = '';
             filterTasks();
             
         } else {
             filters.medium = false;
-            console.log('удалено');
+            //console.log('удалено');
             taskContainer.innerHTML = '';
             filterTasks();
             
@@ -190,23 +229,23 @@ filterContainer.addEventListener('click', function(e) {
     if (e.target = checkbox[3]) {
         if (checkbox[3].checked){
             filters.low = true;
-            console.log('добавлено');
+            //console.log('добавлено');
             taskContainer.innerHTML = '';
             filterTasks();
             
         } else {
             filters.low = false;
-            console.log('удалено');
+            //console.log('удалено');
             taskContainer.innerHTML = '';
             filterTasks();
             
         }
     }
     if ((e.target == caret) || (e.target == caretDate) ) {
-        console.log('время')
+        // console.log('время')
         if (filters.time){
             filters.time = false;
-            console.log('добавлено');
+            //console.log('добавлено');
             taskContainer.innerHTML = '';
             filterTasks();
             
@@ -214,7 +253,7 @@ filterContainer.addEventListener('click', function(e) {
             
         } else {
             filters.time = true;
-            console.log('удалено');
+            //console.log('удалено');
             taskContainer.innerHTML = '';
             filterTasks();
 
@@ -279,7 +318,7 @@ function createTaskElement ({name, priority, date, status, id, actionDate, chang
             `<div class="task">
                 <div class="taskInfo">
                     <form class="taskChangeForm">
-                        <input type="text" name="name" placeholder="Write new task" autofocus>
+                        <input type="text" name="name" placeholder="${name}" autofocus>
                         <button>Change</button>
                     </form>
                     <div class="taskPriority">${priority}</div>
@@ -290,14 +329,22 @@ function createTaskElement ({name, priority, date, status, id, actionDate, chang
             </div>`);
             let changeBtn = document.querySelector('.taskChangeForm button');
             let changeName = document.querySelector('.taskChangeForm input');
-            console.log(changeBtn, changeName);
+            // console.log(changeBtn, changeName);
             changeBtn.addEventListener('click',(e) => {
                 e.preventDefault();
                 const newName = changeName.value;
-                tasks[id-1].name = newName;
-                tasks[id-1].changing = false;
-                taskContainer.innerHTML = '';
-                filterTasks();
+                if (newName === ''){
+                    alert('Rename task');
+                    tasks[id-1].changing = false;
+                    taskContainer.innerHTML = '';
+                    filterTasks();
+                } else {
+                    tasks[id-1].name = newName;
+                    tasks[id-1].changing = false;
+                    taskContainer.innerHTML = '';
+                    filterTasks();
+                }
+                
 
 
 
@@ -313,7 +360,7 @@ function createTaskElement ({name, priority, date, status, id, actionDate, chang
 
 function saveData (){
     localStorage.setItem('taskData', JSON.stringify(tasks));
-    localStorage.setItem('taskHTML', taskContainer.innerHTML);
+    // localStorage.setItem('taskHTML', taskContainer.innerHTML);
 
 }
 
@@ -323,7 +370,7 @@ function showData(){
     } else {
         tasks = JSON.parse(localStorage.getItem('taskData'))
     };
-    taskContainer.innerHTML = localStorage.getItem('taskHTML');
+    // taskContainer.innerHTML = localStorage.getItem('taskHTML');
     tasksAmount = tasks.length;
     id = tasksAmount;
     
@@ -332,5 +379,7 @@ function showData(){
 }
 
 showData();
+filterTasks();
+
 
 
