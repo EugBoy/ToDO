@@ -15,7 +15,7 @@
         <h1>TODO App</h1>
         <form class="taskForm">
             <input type="text" name="name" placeholder="Write new task" autofocus>
-            <button>Add</button>
+            <button onclick="newTask(this)">Add</button>
             <select name="priority">
                 <option value="High" selected="selected">High</option>
                 <option value="Medium">Medium</option>
@@ -24,24 +24,24 @@
         </form>
         <div class="inputFilter">
             <div class="checkbox">
-                <input id="completed" type="checkbox" class="checkComplited" value="completed" >
+                <input id="completed" onclick="newFilter(this)" type="checkbox" class="checkComplited" value="completed" >
                 <label for="completed">Completed</label>
             </div>
             <div class="checkbox">
-                <input id ="high"type="checkbox" class="checkPriority" value="high" checked>
+                <input id ="high" onclick="newFilter(this)" type="checkbox" class="checkPriority" value="high" >
                 <label for="high">High</label>
             </div>
             <div class="checkbox">
-                <input id="medium" type="checkbox" class="checkPriority" value="medium" checked>
+                <input id="medium" onclick="newFilter(this)" type="checkbox" class="checkPriority" value="medium" >
                 <label for="medium">Medium</label>
             </div>
             <div class="checkbox">
-                <input id="low" type="checkbox" class="checkPriority" value="low" checked>
+                <input id="low" onclick="newFilter(this)" type="checkbox" class="checkPriority" value="low" >
                 <label for="low">Low</label>
             </div>
             <div class="checkbox">
-                <img id="date" src="caret.png" alt="">
-                <div class="date">Date</div>
+                <img onclick="timeFilter()" class="imgFilter" id="date" src="caret.png" alt="">
+                <div onclick="timeFilter()" class="date">Date</div>
             </div>
         </div>
         <div class="tasks">
