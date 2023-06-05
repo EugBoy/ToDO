@@ -442,32 +442,52 @@ function createTaskElement ({name, priority, date, status, id, actionDate, chang
             <div class="task-info">
                 <form class="task-change-form">
                     <input type="text" name="name" placeholder="${name}" autofocus>
-                    <button>Change</button>
+                    <button onclick='change(this, ${id})' >Change</button>
                 </form>
                 <div class="task-priority">${priority}</div>
                 <div class="task-date">${date}</div>
             </div>        
         </div>`);
-        let changeBtn = document.querySelector('.task-change-form button');
-        let changeName = document.querySelector('.task-change-form input');
-        // console.log(changeBtn, changeName);
-        changeBtn.addEventListener('click',(e) => {
-        e.preventDefault();
-        const newName = changeName.value;
-        if (newName === ''){
-            alert('Rename task');
-            tasks[id-1].changing = false;
-            taskContainer.innerHTML = '';
-            filterTasks();
-        } else {
-            tasks[id-1].name = newName;
-            tasks[id-1].changing = false;
-            taskContainer.innerHTML = '';
-            filterTasks();
-        }
-        })
+        // let changeBtn = document.querySelector('.task-change-form button');
+        // let changeName = document.querySelector('.task-change-form input');
+        // // console.log(changeBtn, changeName);
+        // // changeBtn.addEventListener('click',(e) => {
+        // e.preventDefault();
+        // const newName = changeName.value;
+        // if (newName === ''){
+        //     alert('Rename task');
+        //     tasks[id-1].changing = false;
+        //     taskContainer.innerHTML = '';
+        //     filterTasks();
+        // } else {
+        //     tasks[id-1].name = newName;
+        //     tasks[id-1].changing = false;
+        //     taskContainer.innerHTML = '';
+        //     filterTasks();
+        // }
+        // saveData ()
+        // })
     }
 }
+
+function change(el,id){
+    let changeForm = el.parentNode;
+    let newName = changeForm.querySelector('input').value;
+    console.log(newName);
+    if (newName === ''){
+        alert('Rename task');
+        tasks[id-1].changing = false;
+        taskContainer.innerHTML = '';
+        filterTasks();
+    } else {
+        tasks[id-1].name = newName;
+        tasks[id-1].changing = false;
+        taskContainer.innerHTML = '';
+        filterTasks();
+    }
+     saveData ()
+}
+
 
 function saveData (){
     localStorage.setItem('taskData', JSON.stringify(tasks));
