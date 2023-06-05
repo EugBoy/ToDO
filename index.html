@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         <h1>TODO App</h1>
-        <form class="taskForm">
+        <form class="task-form">
             <input type="text" name="name" placeholder="Write new task" autofocus>
             <button onclick="newTask(this)">Add</button>
             <select name="priority">
@@ -22,41 +22,30 @@
                 <option value="Low">Low</option>
             </select>
         </form>
-        <div class="inputFilter">
+        <div class="input-filter">
             <div class="checkbox">
-                <input id="completed" onclick="newFilter(this)" type="checkbox" class="checkComplited" value="completed" >
+                <input id="completed" onclick="newFilter(this)" type="checkbox" value="completed" >
                 <label for="completed">Completed</label>
             </div>
             <div class="checkbox">
-                <input id ="high" onclick="newFilter(this)" type="checkbox" class="checkPriority" value="high" >
+                <input id ="high" onclick="newFilter(this)" type="checkbox" value="high" >
                 <label for="high">High</label>
             </div>
             <div class="checkbox">
-                <input id="medium" onclick="newFilter(this)" type="checkbox" class="checkPriority" value="medium" >
+                <input id="medium" onclick="newFilter(this)" type="checkbox" value="medium" >
                 <label for="medium">Medium</label>
             </div>
             <div class="checkbox">
-                <input id="low" onclick="newFilter(this)" type="checkbox" class="checkPriority" value="low" >
+                <input id="low" onclick="newFilter(this)" type="checkbox"  value="low" >
                 <label for="low">Low</label>
             </div>
             <div class="checkbox">
-                <img onclick="timeFilter()" class="imgFilter" id="date" src="caret.png" alt="">
+                <img onclick="timeFilter()" class="img-filter" id="date" src="caret.png" alt="">
                 <div onclick="timeFilter()" class="date">Date</div>
             </div>
         </div>
         <div class="tasks">
-            <!-- <div class="task">
-                <div class="taskInfo">
-                    <div class="taskName">Задача</div>
-                    <div class="taskPriority">Высокий</div>
-                    <div class="taskDate">22.12.2345</div>
-                </div>
-                <div class="taskAction">
-                    <img src="trash.png" alt="" class="actionDelete">
-                    <img src="check.png" alt="" class="actionCompleted">
-                    <img src="cross.png" alt="" class="actionCanseled">
-                </div>
-            </div> -->
+            
         </div>
 
     </div>
