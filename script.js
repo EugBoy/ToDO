@@ -38,14 +38,13 @@ function filterTasks(){
             // console.log(s);
             if (filters.high || filters.medium || filters.low){
                 console.log(filters.high || filters.medium || filters.low);
-                console.log(filters[p] && (s != "performing"))
-                return filters[p] && (s != "performing")   
+                return filters[p] && (s == "completed")   
             } else {
                 return true
             }
         } else {
             if (filters.high || filters.medium || filters.low){      
-                return (s == 'performing') && filters[p] 
+                return filters[p] && (s != "completed")
             } else{
                 return true
             }
@@ -147,15 +146,14 @@ function newTask (e){
     
 // }
 
-function deleteTask(e){
-    let taskId = e.parentNode.parentNode.querySelector('.taskId').innerHTML;
+function deleteTask(taskId){
     tasks[taskId-1].status = 'deleted';
     taskContainer.innerHTML = '';
     filterTasks();
     saveData();
 }
-function completeTask(e){
-    let taskId = e.parentNode.parentNode.querySelector('.taskId').innerHTML;
+
+function completeTask(taskId){
     tasks[taskId-1].status = 'completed';
     const taskDate = new Date;
     const day = taskDate.getDate();
@@ -175,8 +173,7 @@ function completeTask(e){
     saveData();
 
 }
-function canselTask(e){
-    let taskId = e.parentNode.parentNode.querySelector('.taskId').innerHTML;
+function canselTask(taskId){
     tasks[taskId-1].status = 'canceled'
 
     const taskDate = new Date;
@@ -196,8 +193,7 @@ function canselTask(e){
     saveData();
 
 }
-function changeTask(e){
-    let taskId = e.parentNode.parentNode.querySelector('.taskId').innerHTML;
+function changeTask(taskId){
     tasks[taskId-1].changing = true;
     taskContainer.innerHTML = '';
     filterTasks();
@@ -274,6 +270,7 @@ function newFilter(e){
     }
     taskContainer.innerHTML = '';
     filterTasks();
+    // saveData();
 }
 
 function timeFilter(){
@@ -389,22 +386,26 @@ function timeFilter(){
 // })
 
 function createTaskElement ({name, priority, date, status, id, actionDate, changing}) {
-    
-    if (status == "deleted"){
-
-    } else if (status == 'performing' && changing == false){
+    let color = '';
+    if (priority.toLowerCase() == 'high'){
+        color = 'red'
+    } else if (priority.toLowerCase() == 'medium'){
+        color = 'yellow'
+    } else{
+        color = 'green'
+    }
+    if (status == 'performing' && changing == false){
         taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
             <div class="taskInfo">
-                <div class="taskName" onclick="changeTask(this)">${name}</div>
-                <div class="taskPriority">${priority}</div>
+                <div class="taskName" onclick="changeTask(${id})">${name}</div>
+                <div class="taskPriority ${color}">${priority}</div>
                 <div class="taskDate">${date}</div>
-                <div class="taskId">${id}</div>
             </div>
             <div class="taskAction">
-                <img src="trash.png" onclick="deleteTask(this)" alt="" class="actionDelete">
-                <img src="check.png" onclick="completeTask(this)" alt="" class="actionCompleted">
-                <img src="cross.png" onclick="canselTask(this)" alt="" class="actionCansel">
+                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="actionDelete">
+                <img src="check.png" onclick="completeTask(${id})" alt="" class="actionCompleted">
+                <img src="cross.png" onclick="canselTask(${id})" alt="" class="actionCansel">
             </div>
         </div>`);
 
@@ -412,81 +413,64 @@ function createTaskElement ({name, priority, date, status, id, actionDate, chang
         taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
             <div class="taskInfo">
-                <div class="taskName" onclick="changeTask(this)">${name}</div>
-                <div class="taskPriority">${priority}</div>
+                <div class="taskName" onclick="changeTask(${id})">${name}</div>
+                <div class="taskPriority ${color}">${priority}</div>
                 <div class="taskDate">${date}</div>
                 <div class="taskDate">Done ${actionDate}</div>
-                <div class="taskId">${id}</div>
             </div>
             <div class="taskAction">
-                <img src="trash.png" onclick="deleteTask(this)" alt="" class="actionDelete">
-                
+                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="actionDelete">    
             </div>
         </div>`);
 
-    }   else if (status == 'canceled' && changing == false){
+    } else if (status == 'canceled' && changing == false){
         taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
             <div class="taskInfo">
-                <div class="taskName" onclick="changeTask(this)">${name}</div>
-                <div class="taskPriority">${priority}</div>
+                <div class="taskName" onclick="changeTask(${id})">${name}</div>
+                <div class="taskPriority ${color}">${priority}</div>
                 <div class="taskDate">${date}</div>
                 <div class="taskDate">Canceled ${actionDate}</div>
-                <div class="taskId">${id}</div>
             </div>
             <div class="taskAction">
-                <img src="trash.png" onclick="deleteTask(this)" alt="" class="actionDelete">
+                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="actionDelete">
             </div>
         </div>`);
-    }   else if (changing == true){
-            taskContainer.insertAdjacentHTML('beforeend', 
-            `<div class="task">
-                <div class="taskInfo">
-                    <form class="taskChangeForm">
-                        <input type="text" name="name" placeholder="${name}" autofocus>
-                        <button>Change</button>
-                    </form>
-                    <div class="taskPriority">${priority}</div>
-                    <div class="taskDate">${date}</div>
-                    <div class="taskId">${id}</div>
-                </div>
-                
-            </div>`);
-            let changeBtn = document.querySelector('.taskChangeForm button');
-            let changeName = document.querySelector('.taskChangeForm input');
-            // console.log(changeBtn, changeName);
-            changeBtn.addEventListener('click',(e) => {
-                e.preventDefault();
-                const newName = changeName.value;
-                if (newName === ''){
-                    alert('Rename task');
-                    tasks[id-1].changing = false;
-                    taskContainer.innerHTML = '';
-                    filterTasks();
-                } else {
-                    tasks[id-1].name = newName;
-                    tasks[id-1].changing = false;
-                    taskContainer.innerHTML = '';
-                    filterTasks();
-                }
-                
-
-
-
-            } )
+    } else if (changing == true){
+        taskContainer.insertAdjacentHTML('beforeend', 
+        `<div class="task">
+            <div class="taskInfo">
+                <form class="taskChangeForm">
+                    <input type="text" name="name" placeholder="${name}" autofocus>
+                    <button>Change</button>
+                </form>
+                <div class="taskPriority">${priority}</div>
+                <div class="taskDate">${date}</div>
+            </div>        
+        </div>`);
+        let changeBtn = document.querySelector('.taskChangeForm button');
+        let changeName = document.querySelector('.taskChangeForm input');
+        // console.log(changeBtn, changeName);
+        changeBtn.addEventListener('click',(e) => {
+        e.preventDefault();
+        const newName = changeName.value;
+        if (newName === ''){
+            alert('Rename task');
+            tasks[id-1].changing = false;
+            taskContainer.innerHTML = '';
+            filterTasks();
+        } else {
+            tasks[id-1].name = newName;
+            tasks[id-1].changing = false;
+            taskContainer.innerHTML = '';
+            filterTasks();
+        }
+        })
     }
-
 }
-
-
-
-
-
 
 function saveData (){
     localStorage.setItem('taskData', JSON.stringify(tasks));
-    // localStorage.setItem('taskHTML', taskContainer.innerHTML);
-
 }
 
 function showData(){
@@ -495,7 +479,6 @@ function showData(){
     } else {
         tasks = JSON.parse(localStorage.getItem('taskData'))
     };
-    // taskContainer.innerHTML = localStorage.getItem('taskHTML');
     tasksAmount = tasks.length;
     id = tasksAmount;
     

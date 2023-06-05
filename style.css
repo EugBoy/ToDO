@@ -51,19 +51,6 @@ body {
 select option::hover{
     background-color: black;
 }
-select option:nth-child(1){
-    background-color: red;
-    outline: none;
-    text-decoration:none;
-}
-
-select option:nth-child(2){
-    background-color: yellow;
-}
-
-select option:nth-child(3){
-    background-color: green;
-}
 
 .inputFilter {
     display: flex;
@@ -101,7 +88,15 @@ select option:nth-child(3){
     width: 100%;
 }
 
-
+.red{
+    color: red;
+}
+.yellow{
+    color: yellow;
+}
+.green{
+    color: green;
+}
 
 
 
