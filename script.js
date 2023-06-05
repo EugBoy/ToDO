@@ -1,6 +1,6 @@
 const taskContainer = document.querySelector('.tasks');
-const taskForm = document.querySelector('.taskForm');
-const filterContainer = document.querySelector('.inputFilter');
+const taskForm = document.querySelector('.task-form');
+const filterContainer = document.querySelector('.input-filter');
 
 let tasks = [];
 
@@ -274,7 +274,7 @@ function newFilter(e){
 }
 
 function timeFilter(){
-    let caret = document.querySelector('.imgFilter');
+    let caret = document.querySelector('.img-filter');
     if (filters.time){
         filters.time = false;
         taskContainer.innerHTML = '';
@@ -397,59 +397,59 @@ function createTaskElement ({name, priority, date, status, id, actionDate, chang
     if (status == 'performing' && changing == false){
         taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
-            <div class="taskInfo">
-                <div class="taskName" onclick="changeTask(${id})">${name}</div>
-                <div class="taskPriority ${color}">${priority}</div>
-                <div class="taskDate">${date}</div>
+            <div class="task-info">
+                <div class="task-name" onclick="changeTask(${id})">${name}</div>
+                <div class="task-priority ${color}">${priority}</div>
+                <div class="task-date">${date}</div>
             </div>
-            <div class="taskAction">
-                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="actionDelete">
-                <img src="check.png" onclick="completeTask(${id})" alt="" class="actionCompleted">
-                <img src="cross.png" onclick="canselTask(${id})" alt="" class="actionCansel">
+            <div class="task-action">
+                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="action-delete">
+                <img src="check.png" onclick="completeTask(${id})" alt="" class="action-completed">
+                <img src="cross.png" onclick="canselTask(${id})" alt="" class="action-cansel">
             </div>
         </div>`);
 
     } else if (status == 'completed' && changing == false){
         taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
-            <div class="taskInfo">
-                <div class="taskName" onclick="changeTask(${id})">${name}</div>
-                <div class="taskPriority ${color}">${priority}</div>
-                <div class="taskDate">${date}</div>
-                <div class="taskDate">Done ${actionDate}</div>
+            <div class="task-info">
+                <div class="task-name" onclick="changeTask(${id})">${name}</div>
+                <div class="task-priority ${color}">${priority}</div>
+                <div class="task-date">${date}</div>
+                <div class="task-date">Done ${actionDate}</div>
             </div>
-            <div class="taskAction">
-                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="actionDelete">    
+            <div class="task-action">
+                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="action-delete">    
             </div>
         </div>`);
 
     } else if (status == 'canceled' && changing == false){
         taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
-            <div class="taskInfo">
-                <div class="taskName" onclick="changeTask(${id})">${name}</div>
-                <div class="taskPriority ${color}">${priority}</div>
-                <div class="taskDate">${date}</div>
-                <div class="taskDate">Canceled ${actionDate}</div>
+            <div class="task-info">
+                <div class="task-name" onclick="changeTask(${id})">${name}</div>
+                <div class="task-priority ${color}">${priority}</div>
+                <div class="task-date">${date}</div>
+                <div class="task-date">Canceled ${actionDate}</div>
             </div>
-            <div class="taskAction">
-                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="actionDelete">
+            <div class="task-action">
+                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="action-delete">
             </div>
         </div>`);
     } else if (changing == true){
         taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
-            <div class="taskInfo">
-                <form class="taskChangeForm">
+            <div class="task-info">
+                <form class="task-change-form">
                     <input type="text" name="name" placeholder="${name}" autofocus>
                     <button>Change</button>
                 </form>
-                <div class="taskPriority">${priority}</div>
-                <div class="taskDate">${date}</div>
+                <div class="task-priority">${priority}</div>
+                <div class="task-date">${date}</div>
             </div>        
         </div>`);
-        let changeBtn = document.querySelector('.taskChangeForm button');
-        let changeName = document.querySelector('.taskChangeForm input');
+        let changeBtn = document.querySelector('.task-change-form button');
+        let changeName = document.querySelector('.task-change-form input');
         // console.log(changeBtn, changeName);
         changeBtn.addEventListener('click',(e) => {
         e.preventDefault();
