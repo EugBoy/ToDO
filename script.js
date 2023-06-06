@@ -37,7 +37,7 @@ function filterTasks(){
             // console.log(p);
             // console.log(s);
             if (filters.high || filters.medium || filters.low){
-                console.log(filters.high || filters.medium || filters.low);
+                // console.log(filters.high || filters.medium || filters.low);
                 return filters[p] && (s == "completed")   
             } else {
                 return true
@@ -147,14 +147,14 @@ function newTask (e){
 // }
 
 function deleteTask(taskId){
-    tasks[taskId-1].status = 'deleted';
+    tasks[findIndex(taskId)].status = 'deleted';
     taskContainer.innerHTML = '';
     filterTasks();
     saveData();
 }
 
 function completeTask(taskId){
-    tasks[taskId-1].status = 'completed';
+    tasks[findIndex(taskId)].status = 'completed';
     const taskDate = new Date;
     const day = taskDate.getDate();
     const month = String(taskDate.getMonth());
@@ -174,7 +174,7 @@ function completeTask(taskId){
 
 }
 function canselTask(taskId){
-    tasks[taskId-1].status = 'canceled'
+    tasks[findIndex(taskId)].status = 'canceled'
 
     const taskDate = new Date;
     const day = taskDate.getDate();
@@ -194,7 +194,7 @@ function canselTask(taskId){
 
 }
 function changeTask(taskId){
-    tasks[taskId-1].changing = true;
+    tasks[findIndex(taskId)].changing = true;
     taskContainer.innerHTML = '';
     filterTasks();
     saveData();
@@ -285,8 +285,7 @@ function timeFilter(){
         //console.log('удалено');
         taskContainer.innerHTML = '';
         filterTasks();
-
-    caret.style.transform = 'rotate(360deg)';
+        caret.style.transform = 'rotate(360deg)';
             
     }
 }
@@ -386,13 +385,11 @@ function timeFilter(){
 // })
 
 function createTaskElement ({name, priority, date, status, id, actionDate, changing}) {
-    let color = '';
+    let color = 'green';
     if (priority.toLowerCase() == 'high'){
         color = 'red'
     } else if (priority.toLowerCase() == 'medium'){
         color = 'yellow'
-    } else{
-        color = 'green'
     }
     if (status == 'performing' && changing == false){
         taskContainer.insertAdjacentHTML('beforeend', 
@@ -473,15 +470,15 @@ function createTaskElement ({name, priority, date, status, id, actionDate, chang
 function change(el,id){
     let changeForm = el.parentNode;
     let newName = changeForm.querySelector('input').value;
-    console.log(newName);
+    // console.log(newName);
     if (newName === ''){
         alert('Rename task');
-        tasks[id-1].changing = false;
+        tasks[findIndex(id)-1].changing = false;
         taskContainer.innerHTML = '';
         filterTasks();
     } else {
-        tasks[id-1].name = newName;
-        tasks[id-1].changing = false;
+        tasks[findIndex(id)].name = newName;
+        tasks[findIndex(id)].changing = false;
         taskContainer.innerHTML = '';
         filterTasks();
     }
@@ -508,6 +505,17 @@ function showData(){
 
 showData();
 filterTasks();
+function findIndex(id){
+    let index = 0;
+    for (task of tasks){
+        if (task.id == id){
+            return index
+        } else {
+            index++
+        }
+    }
+}
+
 
 
 
