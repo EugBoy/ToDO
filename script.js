@@ -9,7 +9,7 @@ let filters = {
     'high': false,
     'medium': false,
     'low': false,
-    'time': false,    
+    'time': true,    
 };
 
 let tasksAmount = tasks.length;
@@ -278,16 +278,15 @@ function timeFilter(){
     if (filters.time){
         filters.time = false;
         taskContainer.innerHTML = '';
-        filterTasks();
         caret.style.transform = 'rotate(180deg)';
     } else {
         filters.time = true;
         //console.log('удалено');
         taskContainer.innerHTML = '';
-        filterTasks();
         caret.style.transform = 'rotate(360deg)';
             
     }
+    filterTasks();
 }
 
 
