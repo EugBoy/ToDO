@@ -8,11 +8,36 @@ let tasks = [];
 async function postData(data) {
     const response = await fetch(url, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
       body: JSON.stringify(data) // body data type must match "Content-Type" header
     });
     return await response.json(); // parses JSON response into native JavaScript objects
-  }
+}
 
+async function getData() {
+    const response = await fetch(url);
+    tasks = await response.text();
+    
+}
+
+async function deleteData(id) {
+    const response = await fetch(url+'/:'+id, {
+      method: 'DELETE',
+    });
+}
+async function putData(id, data){
+    const response = await fetch(url+'/:'+id, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+      });
+}
 let filters = {
     'completed': false,
     'high': false,
@@ -59,12 +84,11 @@ function filterTasks(){
 }
 
 function newTask (e){
-    const formData = new FormData(e.parentNode);
-    const name = formData.get('name');
+    const name = taskForm.querySelector('input').value;
     if (name == ''){
         alert('Give name to task')
     } else {    
-        const priority = formData.get('priority');
+        const priority = taskForm.querySelector('select').value;
         const changing = false;
         const taskDate = new Date;
         let day = taskDate.getDate();
@@ -90,11 +114,11 @@ function newTask (e){
         tasks.push({name, priority, date, status, id, taskDate, actionDate, changing});
         taskContainer.innerHTML = '';
         filterTasks();
-
-        postData({name, priority, date, status, id, taskDate, actionDate, changing});
-
-        
+        postData({name, priority, date, status, taskDate, actionDate, changing});
         saveData();
+        taskForm.querySelector('input').value ='';
+        
+        
 
         
 
