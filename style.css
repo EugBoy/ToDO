@@ -15,17 +15,17 @@ body {
     text-align: center;
 }
 
-.taskForm {
+.task-form {
     width: 100%;
     height: 70px;
     display: flex;
     justify-content: space-between;
 }
-.taskInfo{
+.task-info{
     padding-top: 10px;
     padding-left: 10px;
 }
-.container .taskForm form {
+.container .task-form form {
     width: 100%;
     height: 150px;
     display: flex;
@@ -33,17 +33,17 @@ body {
 
 }
 
-.container .taskForm input {
+.container .task-form input {
     width: 60%;
     height: 30px;
     box-shadow: none;
 }
-.container .taskForm button {
+.container .task-form button {
     width: 20%;
     height: 35px;
     box-shadow: none;
 }
-.container .taskForm select {
+.container .task-form select {
     width: 20%;
     height: 35px;
     box-shadow: none;
@@ -51,21 +51,8 @@ body {
 select option::hover{
     background-color: black;
 }
-select option:nth-child(1){
-    background-color: red;
-    outline: none;
-    text-decoration:none;
-}
 
-select option:nth-child(2){
-    background-color: yellow;
-}
-
-select option:nth-child(3){
-    background-color: green;
-}
-
-.inputFilter {
+.input-filter {
     display: flex;
     height: 20px;
     width: 100%;
@@ -101,7 +88,15 @@ select option:nth-child(3){
     width: 100%;
 }
 
-
+.red{
+    color: red;
+}
+.yellow{
+    color: yellow;
+}
+.green{
+    color: green;
+}
 
 
 
@@ -120,27 +115,25 @@ select option:nth-child(3){
     margin-bottom: 10px;
 }
 
-.taskInfo {
+.task-info {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 95%;
 }
-.taskAction {
+.task-action {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 5%;
     padding-top: 10px;
 }
-.taskAction img{
+.task-action img{
     width: 20px;
     margin-bottom: 10px;
 
 }
-.taskId {
-    display: none;
-}
-.deletedTask {
+
+.deleted-task {
     display: none;
 }
