@@ -4,6 +4,8 @@ const filterContainer = document.querySelector('.input-filter');
 const url = 'http://127.0.0.1:3000/items';
 
 let tasks = [];
+let l;
+let tasksAmount;
 
 async function postData(data) {
     const response = await fetch(url, {
@@ -20,16 +22,25 @@ async function postData(data) {
 async function getData() {
     const response = await fetch(url);
     tasks = await response.text();
-    
+    tasks = JSON.parse(tasks);
+    filterTasks();
+    l = tasks.length;
+    if (l == 0){
+        tasksAmount = 0;
+    } else {
+        tasksAmount = tasks[l-1].id;   
+    }
+     
 }
 
 async function deleteData(id) {
-    const response = await fetch(url+'/:'+id, {
+    const response = await fetch(url+'/'+id, {
       method: 'DELETE',
     });
 }
+
 async function putData(id, data){
-    const response = await fetch(url+'/:'+id, {
+    const response = await fetch(url+'/'+id, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -38,6 +49,7 @@ async function putData(id, data){
         body: JSON.stringify(data) // body data type must match "Content-Type" header
       });
 }
+
 let filters = {
     'completed': false,
     'high': false,
@@ -45,9 +57,6 @@ let filters = {
     'low': false,
     'time': true,    
 };
-
-let tasksAmount = tasks.length;
-let id = tasksAmount;
 
 function filterTasks(){
     let outputTasks =  JSON.stringify(tasks);
@@ -91,31 +100,17 @@ function newTask (e){
         const priority = taskForm.querySelector('select').value;
         const changing = false;
         const taskDate = new Date;
-        let day = taskDate.getDate();
-        if (Number(day) < 10){
-            day = "0" + day;
-        }
-        const month = String(taskDate.getMonth());
-        const year = taskDate.getFullYear();
-        const hours = taskDate.getHours();
-        let minutes = taskDate.getMinutes();
-        if (Number(minutes) < 10){
-            minutes = "0" + minutes;
-        }
-        const date = day + '.' + month.padStart(2,'0') + '.' +year + ' ' + hours + ':' + minutes;
-
-
-
+        const date = taskDate.toLocaleString();
         const status = "performing";
         const actionDate = "";
         tasksAmount+=1;
         id = tasksAmount;
     
-        tasks.push({name, priority, date, status, id, taskDate, actionDate, changing});
+        tasks.push({name, priority, date, status, id, taskDate, actionDate, changing, id});
         taskContainer.innerHTML = '';
-        filterTasks();
         postData({name, priority, date, status, taskDate, actionDate, changing});
-        saveData();
+        filterTasks();
+        // saveData();
         taskForm.querySelector('input').value ='';
         
         
@@ -129,28 +124,19 @@ function newTask (e){
 
 function deleteTask(taskId){
     tasks[findIndex(taskId)].status = 'deleted';
+    deleteData(taskId);
     taskContainer.innerHTML = '';
     filterTasks();
-    saveData();
 }
 
 function completeTask(taskId){
     tasks[findIndex(taskId)].status = 'completed';
     const taskDate = new Date;
-    const day = taskDate.getDate();
-    const month = String(taskDate.getMonth());
-    const year = taskDate.getFullYear();
-    const hours = taskDate.getHours();
-    let minutes = taskDate.getMinutes();
-    if (Number(minutes) < 10){
-        minutes = "0" + minutes;
-    }
-    const date = day + '.' + month.padStart(2,'0') + '.' +year + ' ' + hours + ':' + minutes;
-    tasks[taskId-1].actionDate = date;
-
+    const date = taskDate.toLocaleString();
+    tasks[findIndex(taskId)].actionDate = date;
     taskContainer.innerHTML = '';
     filterTasks();
-    saveData();
+    putData(taskId, {'status':'completed', 'actionDate': date});
 
 }
 
@@ -158,28 +144,21 @@ function canselTask(taskId){
     tasks[findIndex(taskId)].status = 'canceled'
 
     const taskDate = new Date;
-    const day = taskDate.getDate();
-    const month = String(taskDate.getMonth());
-    const year = taskDate.getFullYear();
-    const hours = taskDate.getHours();
-    let minutes = taskDate.getMinutes();
-    if (Number(minutes) < 10){
-        minutes = "0" + minutes;
-    }
-    const date = day + '.' + month.padStart(2,'0') + '.' +year + ' ' + hours + ':' + minutes;
-
-    tasks[taskId-1].actionDate = date;
+    const date = taskDate.toLocaleString();
+    tasks[findIndex(taskId)].actionDate = date;
     taskContainer.innerHTML = '';
     filterTasks(); 
-    saveData();
+    putData(taskId, {'status':'canceled', 'actionDate': date});
 
 }
 
 function changeTask(taskId){
     tasks[findIndex(taskId)].changing = true;
+    
     taskContainer.innerHTML = '';
     filterTasks();
-    saveData();
+    putData(taskId, {'changing': true});
+
 
 }
 
@@ -279,34 +258,28 @@ function change(el,id){
     let newName = changeForm.querySelector('input').value;
     if (newName === ''){
         alert('Rename task');
-        tasks[findIndex(id)-1].changing = false;
-        taskContainer.innerHTML = '';
+        tasks[findIndex(id)].changing = false;
+        taskContainer.innerHTML = ''; 
+        putData(id, {'changing': false, 'name': newName});
         filterTasks();
+
     } else {
         tasks[findIndex(id)].name = newName;
         tasks[findIndex(id)].changing = false;
         taskContainer.innerHTML = '';
+        
+        putData(id, {'changing': false, 'name': newName})
         filterTasks();
+        
     }
-     saveData ()
+
+     
 }
 
-function saveData (){
-    localStorage.setItem('taskData', JSON.stringify(tasks));
-}
 
-function showData(){
-    if (JSON.parse(localStorage.getItem('taskData')) == null){
-        tasks = []
-    } else {
-        tasks = JSON.parse(localStorage.getItem('taskData'))
-    };
-    tasksAmount = tasks.length;
-    id = tasksAmount;
-}
+getData();
 
-showData();
-filterTasks();
+
 
 function findIndex(id){
     let index = 0;
