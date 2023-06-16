@@ -4,8 +4,7 @@ const filterContainer = document.querySelector('.input-filter');
 const url = 'http://127.0.0.1:3000/items';
 
 let tasks = [];
-let l;
-let tasksAmount;
+
 
 async function postData(data) {
     const response = await fetch(url, {
@@ -23,14 +22,9 @@ async function getData() {
     const response = await fetch(url);
     tasks = await response.text();
     tasks = JSON.parse(tasks);
+    taskContainer.innerHTML = '';
     filterTasks();
-    l = tasks.length;
-    if (l == 0){
-        tasksAmount = 0;
-    } else {
-        tasksAmount = tasks[l-1].id;   
-    }
-     
+    
 }
 
 async function deleteData(id) {
@@ -103,13 +97,15 @@ function newTask (e){
         const date = taskDate.toLocaleString();
         const status = "performing";
         const actionDate = "";
-        tasksAmount+=1;
-        id = tasksAmount;
+        // tasksAmount+=1;
+        // id = tasksAmount;
     
-        tasks.push({name, priority, date, status, id, taskDate, actionDate, changing, id});
-        taskContainer.innerHTML = '';
+        // tasks.push({name, priority, date, status, id, taskDate, actionDate, changing, id});
+        
         postData({name, priority, date, status, taskDate, actionDate, changing});
-        filterTasks();
+        getData();
+        // taskContainer.innerHTML = '';
+        // filterTasks();
         // saveData();
         taskForm.querySelector('input').value ='';
         
@@ -123,43 +119,46 @@ function newTask (e){
 }
 
 function deleteTask(taskId){
-    tasks[findIndex(taskId)].status = 'deleted';
+    // tasks[findIndex(taskId)].status = 'deleted';
     deleteData(taskId);
-    taskContainer.innerHTML = '';
-    filterTasks();
+    // taskContainer.innerHTML = '';
+    getData();
+    
+    // filterTasks();
 }
 
 function completeTask(taskId){
-    tasks[findIndex(taskId)].status = 'completed';
+    // tasks[findIndex(taskId)].status = 'completed';
     const taskDate = new Date;
     const date = taskDate.toLocaleString();
-    tasks[findIndex(taskId)].actionDate = date;
-    taskContainer.innerHTML = '';
-    filterTasks();
+    // tasks[findIndex(taskId)].actionDate = date;
     putData(taskId, {'status':'completed', 'actionDate': date});
-
+    // taskContainer.innerHTML = '';
+    getData();
+    
+    // filterTasks();
 }
 
 function canselTask(taskId){
-    tasks[findIndex(taskId)].status = 'canceled'
+    // tasks[findIndex(taskId)].status = 'canceled'
 
     const taskDate = new Date;
     const date = taskDate.toLocaleString();
-    tasks[findIndex(taskId)].actionDate = date;
-    taskContainer.innerHTML = '';
-    filterTasks(); 
+    // tasks[findIndex(taskId)].actionDate = date;
     putData(taskId, {'status':'canceled', 'actionDate': date});
-
+    // taskContainer.innerHTML = '';
+    getData();
+    
+    // filterTasks(); 
 }
 
 function changeTask(taskId){
     tasks[findIndex(taskId)].changing = true;
-    
-    taskContainer.innerHTML = '';
-    filterTasks();
     putData(taskId, {'changing': true});
-
-
+    // taskContainer.innerHTML = '';
+    getData();    
+    
+    // filterTasks();
 }
 
 function newFilter(e){
@@ -269,8 +268,7 @@ function change(el,id){
         taskContainer.innerHTML = '';
         
         putData(id, {'changing': false, 'name': newName})
-        filterTasks();
-        
+        getData();        
     }
 
      
@@ -278,6 +276,8 @@ function change(el,id){
 
 
 getData();
+
+
 
 
 
