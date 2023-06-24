@@ -89,7 +89,7 @@ function newTask (e){
     } else {    
         const priority = taskForm.querySelector('select').value;
         const changing = false;
-        const date = new Date.toLocaleString();
+        const date = new Date().toLocaleString();
         const status = "performing";
         const actionDate = "";
         // tasksAmount+=1;
@@ -124,7 +124,7 @@ function deleteTask(taskId){
 
 function completeTask(taskId){
     // tasks[findIndex(taskId)].status = 'completed';
-    const date = new Date.toLocaleString();
+    const date = new Date().toLocaleString();
     // tasks[findIndex(taskId)].actionDate = date;
     putData(taskId, {'status':'completed', 'actionDate': date});
     // taskContainer.innerHTML = '';
@@ -136,8 +136,7 @@ function completeTask(taskId){
 function canselTask(taskId){
     // tasks[findIndex(taskId)].status = 'canceled'
 
-    const taskDate = new Date;
-    const date = taskDate.toLocaleString();
+    const date = new Date().toLocaleString();
     // tasks[findIndex(taskId)].actionDate = date;
     putData(taskId, {'status':'canceled', 'actionDate': date});
     // taskContainer.innerHTML = '';
@@ -192,7 +191,7 @@ function createTaskElement({name, priority, date, status, id, actionDate, changi
                 <div class="task-name" onclick="changeTask(${id})">${name}</div>
                 <div class="task-priority ${color}">${priority}</div>
                 <div class="task-date">${date}</div>
-                ${(actionDate != '') ? `<div class="task-date">Done ${actionDate}</div>` : ''}
+                ${(actionDate != '') ? `<div class="task-date">${status == 'completed' ? 'Done ' : 'Canceled '}${actionDate}</div>` : ''}
             </div>
             <div class="task-action">
                 <img src="trash.png" onclick="deleteTask(${id})" alt="" class="action-delete">
