@@ -185,7 +185,22 @@ function createTaskElement({name, priority, date, status, id, actionDate, changi
     } else if (priority.toLowerCase() == 'medium'){
         color = 'yellow'
     }
-    taskContainer.insertAdjacentHTML('beforeend', 
+    console.log(changing);
+    if (changing){
+        taskContainer.insertAdjacentHTML('beforeend', 
+        `<div class="task">
+            <div class="task-info">
+                <form class="task-change-form">
+                    <input type="text" name="name" placeholder="${name}" autofocus>
+                    <button onclick='change(this, ${id})' >Change</button>
+                </form>
+                <div class="task-priority">${priority}</div>
+                <div class="task-date">${date}</div>
+            </div>        
+        </div>`);
+        
+    } else {
+        taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
             <div class="task-info">
                 <div class="task-name" onclick="changeTask(${id})">${name}</div>
@@ -200,6 +215,8 @@ function createTaskElement({name, priority, date, status, id, actionDate, changi
                 
             </div>
         </div>`);
+    }
+    
 
 }
 
