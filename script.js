@@ -11,11 +11,13 @@ async function postData(data) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
-    });
-    return await response.json(); // parses JSON response into native JavaScript objects
+      body: JSON.stringify(data) 
+    }).then(() => getData())
+
+    
+    
+    
 }
 
 async function getData() {
@@ -30,7 +32,7 @@ async function getData() {
 async function deleteData(id) {
     const response = await fetch(url+'/'+id, {
       method: 'DELETE',
-    });
+    }).then(() => getData())
 }
 
 async function putData(id, data){
@@ -38,10 +40,9 @@ async function putData(id, data){
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
-          // 'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify(data) // body data type must match "Content-Type" header
-      });
+        body: JSON.stringify(data)
+      }).then(() => getData())
 }
 
 let filters = {
@@ -53,16 +54,11 @@ let filters = {
 };
 
 function filterTasks(){
-    let outputTasks =  JSON.stringify(tasks);
-    outputTasks = JSON.parse(outputTasks);
+    let outputTasks =  structuredClone(tasks);
     if (filters.time){
-        outputTasks.sort(function(a,b){
-            return 1
-        })
+        outputTasks.sort((a,b) => 1)
     } else {
-        outputTasks.sort(function(a,b){
-            return -1
-        })
+        outputTasks.sort((a,b) => -1)
     }
     outputTasks = outputTasks.filter(function(el){
         let p = el.priority.toLowerCase();
@@ -93,8 +89,7 @@ function newTask (e){
     } else {    
         const priority = taskForm.querySelector('select').value;
         const changing = false;
-        const taskDate = new Date;
-        const date = taskDate.toLocaleString();
+        const date = new Date.toLocaleString();
         const status = "performing";
         const actionDate = "";
         // tasksAmount+=1;
@@ -102,8 +97,8 @@ function newTask (e){
     
         // tasks.push({name, priority, date, status, id, taskDate, actionDate, changing, id});
         
-        postData({name, priority, date, status, taskDate, actionDate, changing});
-        getData();
+        postData({name, priority, status, date, actionDate, changing});
+        // getData();
         // taskContainer.innerHTML = '';
         // filterTasks();
         // saveData();
@@ -129,12 +124,11 @@ function deleteTask(taskId){
 
 function completeTask(taskId){
     // tasks[findIndex(taskId)].status = 'completed';
-    const taskDate = new Date;
-    const date = taskDate.toLocaleString();
+    const date = new Date.toLocaleString();
     // tasks[findIndex(taskId)].actionDate = date;
     putData(taskId, {'status':'completed', 'actionDate': date});
     // taskContainer.innerHTML = '';
-    getData();
+    // getData();
     
     // filterTasks();
 }
@@ -147,28 +141,23 @@ function canselTask(taskId){
     // tasks[findIndex(taskId)].actionDate = date;
     putData(taskId, {'status':'canceled', 'actionDate': date});
     // taskContainer.innerHTML = '';
-    getData();
+    // getData();
     
     // filterTasks(); 
 }
 
 function changeTask(taskId){
-    tasks[findIndex(taskId)].changing = true;
+    // tasks[findIndex(taskId)].changing = true;
     putData(taskId, {'changing': true});
     // taskContainer.innerHTML = '';
-    getData();    
+    // getData();    
     
     // filterTasks();
 }
 
 function newFilter(e){
     let inputValue = e.value;;
-    if (e.checked){
-        filters[inputValue] = true
-        
-    } else {
-        filters[inputValue] = false
-    }
+    filters[inputValue] = e.checked;
     taskContainer.innerHTML = '';
     filterTasks();
 }
@@ -188,68 +177,31 @@ function timeFilter(){
     filterTasks();
 }
 
-function createTaskElement ({name, priority, date, status, id, actionDate, changing}) {
+
+
+function createTaskElement({name, priority, date, status, id, actionDate, changing}){
     let color = 'green';
     if (priority.toLowerCase() == 'high'){
         color = 'red'
     } else if (priority.toLowerCase() == 'medium'){
         color = 'yellow'
     }
-    if (status == 'performing' && changing == false){
-        taskContainer.insertAdjacentHTML('beforeend', 
+    taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
             <div class="task-info">
                 <div class="task-name" onclick="changeTask(${id})">${name}</div>
                 <div class="task-priority ${color}">${priority}</div>
                 <div class="task-date">${date}</div>
+                ${(actionDate != '') ? `<div class="task-date">Done ${actionDate}</div>` : ''}
             </div>
             <div class="task-action">
                 <img src="trash.png" onclick="deleteTask(${id})" alt="" class="action-delete">
-                <img src="check.png" onclick="completeTask(${id})" alt="" class="action-completed">
-                <img src="cross.png" onclick="canselTask(${id})" alt="" class="action-cansel">
+                ${(actionDate == '') ? `<img src="check.png" onclick="completeTask(${id})" alt="" class="action-completed">
+                <img src="cross.png" onclick="canselTask(${id})" alt="" class="action-cansel">` : ''}
+                
             </div>
         </div>`);
 
-    } else if (status == 'completed' && changing == false){
-        taskContainer.insertAdjacentHTML('beforeend', 
-        `<div class="task">
-            <div class="task-info">
-                <div class="task-name" onclick="changeTask(${id})">${name}</div>
-                <div class="task-priority ${color}">${priority}</div>
-                <div class="task-date">${date}</div>
-                <div class="task-date">Done ${actionDate}</div>
-            </div>
-            <div class="task-action">
-                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="action-delete">    
-            </div>
-        </div>`);
-
-    } else if (status == 'canceled' && changing == false){
-        taskContainer.insertAdjacentHTML('beforeend', 
-        `<div class="task">
-            <div class="task-info">
-                <div class="task-name" onclick="changeTask(${id})">${name}</div>
-                <div class="task-priority ${color}">${priority}</div>
-                <div class="task-date">${date}</div>
-                <div class="task-date">Canceled ${actionDate}</div>
-            </div>
-            <div class="task-action">
-                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="action-delete">
-            </div>
-        </div>`);
-    } else if (changing == true){
-        taskContainer.insertAdjacentHTML('beforeend', 
-        `<div class="task">
-            <div class="task-info">
-                <form class="task-change-form">
-                    <input type="text" name="name" placeholder="${name}" autofocus>
-                    <button onclick='change(this, ${id})' >Change</button>
-                </form>
-                <div class="task-priority">${priority}</div>
-                <div class="task-date">${date}</div>
-            </div>        
-        </div>`);
-    }
 }
 
 function change(el,id){
@@ -259,8 +211,8 @@ function change(el,id){
         alert('Rename task');
         tasks[findIndex(id)].changing = false;
         taskContainer.innerHTML = ''; 
-        putData(id, {'changing': false, 'name': newName});
-        filterTasks();
+        putData(id, {'changing': false});
+        // filterTasks();
 
     } else {
         tasks[findIndex(id)].name = newName;
@@ -268,7 +220,7 @@ function change(el,id){
         taskContainer.innerHTML = '';
         
         putData(id, {'changing': false, 'name': newName})
-        getData();        
+        // getData();        
     }
 
      
