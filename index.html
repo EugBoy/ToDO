@@ -13,17 +13,17 @@
 <body>
     <div class="container">
         <div class="task-form">
-            <input type="text" 
-            name="name" 
-            placeholder="Write new task" 
-            autofocus>
+            <input  type="text" 
+                    name="name" 
+                    placeholder="Write new task" 
+                    autofocus>
             <button onclick="newTask(this)">
                 Add
             </button>
             <select name="priority">
                 <option value="High" 
-                selected="selected">
-                    High
+                        selected="selected">
+                        High
                 </option>
                 <option value="Medium">
                     Medium
@@ -35,50 +35,50 @@
         </div>
         <div class="input-filter">
             <div class="checkbox">
-                <input id="completed" 
-                onclick="newFilter(this)" 
-                type="checkbox" 
-                value="completed" >
+                <input  id="completed" 
+                        onclick="newFilter(this)" 
+                        type="checkbox" 
+                        value="completed" >
                 <label for="completed">
                     Completed
                 </label>
             </div>
             <div class="checkbox">
-                <input id ="high" 
-                onclick="newFilter(this)" 
-                type="checkbox" 
-                value="high">
+                <input  id ="high" 
+                        onclick="newFilter(this)" 
+                        type="checkbox" 
+                        value="high">
                 <label for="high">
                     High
                 </label>
             </div>
             <div class="checkbox">
-                <input id="medium" 
-                onclick="newFilter(this)" 
-                type="checkbox" 
-                value="medium" >
+                <input  id="medium" 
+                        onclick="newFilter(this)" 
+                        type="checkbox" 
+                        value="medium" >
                 <label for="medium">
                     Medium
                 </label>
             </div>
             <div class="checkbox">
-                <input id="low" 
-                onclick="newFilter(this)" 
-                type="checkbox"  
-                value="low" >
+                <input  id="low" 
+                        onclick="newFilter(this)" 
+                        type="checkbox"  
+                        value="low" >
                 <label for="low">
                     Low
                 </label>
             </div>
             <div class="checkbox">
-                <img onclick="timeFilter()" 
-                class="img-filter" 
-                id="date" 
-                src="caret.png" 
-                alt="">
-                <div onclick="timeFilter()" 
-                class="date">
-                Date
+                <img    onclick="timeFilter()" 
+                        class="img-filter" 
+                        id="date" 
+                        src="caret.png" 
+                        alt="">
+                <div    onclick="timeFilter()" 
+                        class="date">
+                    Date
             </div>
             </div>
         </div>

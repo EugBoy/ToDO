@@ -5,7 +5,6 @@ const url = 'http://127.0.0.1:3000/items';
 
 let tasks = [];
 
-
 async function postData(data) {
     const response = await fetch(url, {
       method: 'POST',
@@ -139,10 +138,10 @@ function createTaskElement({name, priority, date, status, id, actionDate, changi
         `<div class="task">
             <div class="task-info">
                 <form class="task-change-form">
-                    <input type="text" 
-                    name="name" 
-                    placeholder="${name}" 
-                    autofocus>
+                    <input  type="text" 
+                            name="name" 
+                            placeholder="${name}" 
+                            autofocus>
                     <button onclick='change(this, ${id})'>
                         Change
                     </button>
@@ -159,21 +158,34 @@ function createTaskElement({name, priority, date, status, id, actionDate, changi
         taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
             <div class="task-info">
-                <div class="task-name" onclick="changeTask(${id})">${name}</div>
-                <div class="task-priority ${color}">${priority}</div>
-                <div class="task-date">${date}</div>
-                ${(actionDate != '') ? `<div class="task-date">${status == 'completed' ? 'Done ' : 'Canceled '}${actionDate}</div>` : ''}
+                <div    class="task-name" 
+                        onclick="changeTask(${id})">
+                    ${name}
+                </div>
+                <div class="task-priority ${color}">
+                    ${priority}
+                </div>
+                <div class="task-date">
+                    ${date}
+                </div>
+                ${(actionDate != '') ? `<div class="task-date">
+                    ${status == 'completed' ? 'Done ' : 'Canceled '}${actionDate}
+                </div>` : ''}
             </div>
             <div class="task-action">
-                <img src="trash.png" onclick="deleteTask(${id})" alt="" class="action-delete">
-                ${(actionDate == '') ? `<img src="check.png" onclick="completeTask(${id})" alt="" class="action-completed">
-                <img src="cross.png" onclick="canselTask(${id})" alt="" class="action-cansel">` : ''}
+                <img    src="trash.png" 
+                        onclick="deleteTask(${id})" 
+                        alt="" class="action-delete">
+                    ${(actionDate == '') ? `<img    src="check.png" 
+                                                    onclick="completeTask(${id})" 
+                                                    alt="" class="action-completed">
+                                            <img    src="cross.png" 
+                                                    onclick="canselTask(${id})" 
+                                                    alt="" class="action-cansel">` : ''}
                 
             </div>
         </div>`);
     }
-    
-
 }
 
 function change(el,id){

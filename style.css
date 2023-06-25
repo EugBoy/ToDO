@@ -58,7 +58,7 @@ body {
     box-shadow: none;
 }
 
-select option::hover{
+select option::hover {
     background-color: black;
 }
 
@@ -74,21 +74,21 @@ select option::hover{
     background-color: #fff;
 }
 
-.checkbox{
+.checkbox {
     display: flex;
     flex-direction: row;
 }
 
-.checkbox label{
+.checkbox label {
     padding-left: 10px;    
 }
 
-.checkbox div{
+.checkbox div {
     width: 100%;    
     padding-left: 10px;
 }
 
-.checkbox img{
+.checkbox img {
     margin-right: 10px;
     height: 20px;
     width: 20px;
@@ -98,17 +98,19 @@ select option::hover{
     width: 100%;
 }
 
-.red{
+.red {
     color: red;
 }
-.yellow{
+
+.yellow {
     color: yellow;
 }
-.green{
+
+.green  {
     color: green;
 }
 
-.tasks{
+.tasks {
     margin-top:120px;
 }
 
@@ -127,6 +129,7 @@ select option::hover{
     height: 100%;
     width: 95%;
 }
+
 .task-action {
     display: flex;
     flex-direction: column;
@@ -134,7 +137,8 @@ select option::hover{
     width: 5%;
     padding-top: 10px;
 }
-.task-action img{
+
+.task-action img {
     width: 20px;
     margin-bottom: 10px;
 }
