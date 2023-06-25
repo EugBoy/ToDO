@@ -14,10 +14,6 @@ async function postData(data) {
       },
       body: JSON.stringify(data) 
     }).then(() => getData())
-
-    
-    
-    
 }
 
 async function getData() {
@@ -26,7 +22,6 @@ async function getData() {
     tasks = JSON.parse(tasks);
     taskContainer.innerHTML = '';
     filterTasks();
-    
 }
 
 async function deleteData(id) {
@@ -55,103 +50,59 @@ let filters = {
 
 function filterTasks(){
     let outputTasks =  structuredClone(tasks);
-    if (filters.time){
-        outputTasks.sort((a,b) => 1)
-    } else {
-        outputTasks.sort((a,b) => -1)
-    }
+    outputTasks.sort(() => (filters.time) ? 1 : -1 )
     outputTasks = outputTasks.filter(function(el){
         let p = el.priority.toLowerCase();
         let s = el.status.toLowerCase();
         if (filters.completed){
-
             if (filters.high || filters.medium || filters.low){
-                return filters[p] && (s == "completed")   
+                return filters[p] && (s === "completed")   
             } else {
                 return s == "completed"
             }
         } else {
             if (filters.high || filters.medium || filters.low){      
-                return filters[p] && (s != "completed")
+                return filters[p]
             } else{
                 return true
             }
         }   
     })
-
     outputTasks.forEach(createTaskElement)
 }
 
 function newTask (e){
     const name = taskForm.querySelector('input').value;
-    if (name == ''){
+    if (name === ''){
         alert('Give name to task')
     } else {    
         const priority = taskForm.querySelector('select').value;
         const changing = false;
-        const date = new Date().toLocaleString();
+        const date = new Date().toLocaleString('ru-RU');
         const status = "performing";
         const actionDate = "";
-        // tasksAmount+=1;
-        // id = tasksAmount;
-    
-        // tasks.push({name, priority, date, status, id, taskDate, actionDate, changing, id});
-        
         postData({name, priority, status, date, actionDate, changing});
-        // getData();
-        // taskContainer.innerHTML = '';
-        // filterTasks();
-        // saveData();
         taskForm.querySelector('input').value ='';
-        
-        
-
-        
-
     }
-    
-    
 }
 
 function deleteTask(taskId){
-    // tasks[findIndex(taskId)].status = 'deleted';
     deleteData(taskId);
-    // taskContainer.innerHTML = '';
     getData();
-    
-    // filterTasks();
 }
 
 function completeTask(taskId){
-    // tasks[findIndex(taskId)].status = 'completed';
-    const date = new Date().toLocaleString();
-    // tasks[findIndex(taskId)].actionDate = date;
+    const date = new Date().toLocaleString('ru-RU');
     putData(taskId, {'status':'completed', 'actionDate': date});
-    // taskContainer.innerHTML = '';
-    // getData();
-    
-    // filterTasks();
 }
 
 function canselTask(taskId){
-    // tasks[findIndex(taskId)].status = 'canceled'
-
-    const date = new Date().toLocaleString();
-    // tasks[findIndex(taskId)].actionDate = date;
+    const date = new Date().toLocaleString('ru-RU');
     putData(taskId, {'status':'canceled', 'actionDate': date});
-    // taskContainer.innerHTML = '';
-    // getData();
-    
-    // filterTasks(); 
 }
 
 function changeTask(taskId){
-    // tasks[findIndex(taskId)].changing = true;
     putData(taskId, {'changing': true});
-    // taskContainer.innerHTML = '';
-    // getData();    
-    
-    // filterTasks();
 }
 
 function newFilter(e){
@@ -170,13 +121,10 @@ function timeFilter(){
     } else {
         filters.time = true;
         taskContainer.innerHTML = '';
-        caret.style.transform = 'rotate(360deg)';
-            
+        caret.style.transform = 'rotate(360deg)';      
     }
     filterTasks();
 }
-
-
 
 function createTaskElement({name, priority, date, status, id, actionDate, changing}){
     let color = 'green';
@@ -191,14 +139,22 @@ function createTaskElement({name, priority, date, status, id, actionDate, changi
         `<div class="task">
             <div class="task-info">
                 <form class="task-change-form">
-                    <input type="text" name="name" placeholder="${name}" autofocus>
-                    <button onclick='change(this, ${id})' >Change</button>
+                    <input type="text" 
+                    name="name" 
+                    placeholder="${name}" 
+                    autofocus>
+                    <button onclick='change(this, ${id})'>
+                        Change
+                    </button>
                 </form>
-                <div class="task-priority">${priority}</div>
-                <div class="task-date">${date}</div>
+                <div class="task-priority">
+                    ${priority}
+                </div>
+                <div class="task-date">
+                    ${date}
+                </div>
             </div>        
-        </div>`);
-        
+        </div>`);        
     } else {
         taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
@@ -228,26 +184,15 @@ function change(el,id){
         tasks[findIndex(id)].changing = false;
         taskContainer.innerHTML = ''; 
         putData(id, {'changing': false});
-        // filterTasks();
-
     } else {
         tasks[findIndex(id)].name = newName;
         tasks[findIndex(id)].changing = false;
         taskContainer.innerHTML = '';
-        
         putData(id, {'changing': false, 'name': newName})
-        // getData();        
     }
-
-     
 }
 
-
 getData();
-
-
-
-
 
 function findIndex(id){
     let index = 0;
