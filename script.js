@@ -132,7 +132,6 @@ function createTaskElement({name, priority, date, status, id, actionDate, changi
     } else if (priority.toLowerCase() == 'medium'){
         color = 'yellow'
     }
-    console.log(changing);
     if (changing){
         taskContainer.insertAdjacentHTML('beforeend', 
         `<div class="task">
